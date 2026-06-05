@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación de Grado</title>
+  
+  <!-- CDN de Tailwind CSS y Librerías de Iconos/Fuentes -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  
+  <style>
+    :root { --vh: 1vh; }
+    body { font-family: 'Raleway', sans-serif; background-color: #faf8f5; }
+    .font-playfair { font-family: 'Playfair Display', serif; }
+
+    /* Estilos del Sobre Animado */
+    .envelope-wrapper { perspective: 1200px; }
+    .envelope { width: 420px; height: 290px; position: relative; transform-style: preserve-3d; }
+    .envelope-body { background: linear-gradient(145deg, #f5f0e8, #ede4d8); border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.15), inset 0 0 30px rgba(200,180,150,0.2); }
+    .envelope-flap { position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(180deg, #ede4d8, #e8ddd0); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2; }
+    .envelope.opened .envelope-flap { transform: rotateX(180deg); }
+
+    /* Animación del contenido de la invitación */
+    .invitation { opacity: 0; transform: translateY(40px); transition: opacity 1s ease 0.5s, transform 1s ease 0.5s; }
+    .invitation.visible { opacity: 1; transform: translateY(0); }
+    .invitation > * { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    
+    /* Escalado de tiempos de aparición */
+    .invitation.visible > *:nth-child(1) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+    .invitation.visible > *:nth-child(2) { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
+    .invitation.visible > *:nth-child(3) { transition-delay: 0.7s; opacity: 1; transform: translateY(0); }
+    .invitation.visible > *:nth-child(4) { transition-delay: 0.9s; opacity: 1; transform: translateY(0); }
+    .invitation.visible > *:nth-child(5) { transition-delay: 1.1s; opacity: 1; transform: translateY(0); }
+    .invitation.visible > *:nth-child(6) { transition-delay: 1.3s; opacity: 1; transform: translateY(0); }
+    .invitation.visible > *:nth-child(7) { transition-delay: 1.5s; opacity: 1; transform: translateY(0); }
+    .invitation.visible > *:nth-child(8) { transition-delay: 1.7s; opacity: 1; transform: translateY(0); }
+
+    /* Efectos de destellos (Sparkles) */
+    .sparkle { position: fixed; width: 4px; height: 4px; background: #d4a853; border-radius: 50%; pointer-events: none; animation: sparkleFloat 4s ease-in-out infinite; opacity: 0; }
+    @keyframes sparkleFloat {
+        0%, 100% { opacity: 0; transform: translateY(0) scale(0); }
+        50% { opacity: 0.7; transform: translateY(-30px) scale(1); }
+    }
+
+    .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, #d4a853, transparent); }
+    .seal-btn { background: radial-gradient(circle, #d4a853, #b8860b); box-shadow: 0 4px 15px rgba(212,168,83,0.4); }
+    .seal-btn:hover { box-shadow: 0 6px 25px rgba(212,168,83,0.6); transform: scale(1.05); }
+    .wax-seal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 72px; height: 72px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #f5d280, #d4a853 40%, #b8860b 80%, #8b6914); box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+
+<body class="w-full min-h-screen flex items-center justify-center p-4">
+  
+  <!-- Fondo con destellos mágicos -->
+  <div id="sparkles" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+
+  <!-- PANTALLA 1: EL SOBRE CERRADO -->
+  <section id="envelope-screen" class="flex flex-col items-center justify-center gap-8 text-center">
+    <div class="envelope-wrapper">
+      <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-body absolute inset-0 flex flex-col items-center justify-center p-6 rounded-lg space-y-4">
+          <p class="text-xs uppercase tracking-[0.3em]" style="color:#b8860b;">Invitación Especial</p>
+          <!-- CAMBIA ESTE TEXTO POR EL NOMBRE DE TU INVITADO O DEJA "Familia e Invitados" -->
+          <p class="font-playfair text-lg text-gray-700">PONE_AQUÍ_EL_NOMBRE_DEL_INVITADO</p>
+        </div>
+        <!-- Sello de cera con birretes -->
+        <div class="wax-seal">
+          <svg width="48" height="48" viewbox="0 0 48 48" fill="none">
+            <path d="M10 22l8-4 8 4-8 4-8-4z" fill="#3d2a0a" />
+            <path d="M18 26v5" stroke="#3d2a0a" stroke-width="1.2" />
+            <path d="M12 24v4c0 1.5 2.7 3 6 3s6-1.5 6-3v-4" fill="none" stroke="#3d2a0a" stroke-width="1" />
+            <rect x="9" y="22" width="1" height="6" fill="#3d2a0a" rx="0.5" />
+            <path d="M26 22l8-4 8 4-8 4-8-4z" fill="#3d2a0a" />
+            <path d="M34 26v5" stroke="#3d2a0a" stroke-width="1.2" />
+            <path d="M28 24v4c0 1.5 2.7 3 6 3s6-1.5 6-3v-4" fill="none" stroke="#3d2a0a" stroke-width="1" />
+            <rect x="25" y="22" width="1" height="6" fill="#3d2a0a" rx="0.5" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center mt-6">
+      <button id="open-btn" class="seal-btn text-white font-medium px-6 py-2.5 rounded-full transition-all duration-300 text-sm tracking-wide shadow-md" onclick="openEnvelope()">
+        <span>Abrir Invitación</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- PANTALLA 2: INTERIOR DE LA INVITACIÓN -->
+  <section id="invitation-section" class="hidden w-full max-w-lg mx-auto dynamic-card bg-white p-8 rounded-2xl shadow-2xl my-4">
+    <div class="invitation" id="invitation-content">
+      
+      <!-- Foto de la Graduanda (Coloca tu foto en la misma carpeta y cambia 'foto_perfil.jpg') -->
+      <div class="flex justify-center mb-6">
+        <div class="w-56 h-64 overflow-hidden shadow-xl" style="border-radius: 50%; border: 8px solid #d4a853;">
+          <img src="daniela.jpeg" alt="Graduanda" class="w-full h-full object-cover bg-white" loading="lazy">
+        </div>
+      </div>
+
+      <!-- Icono de Birrete y Título Principal -->
+      <div class="text-center mb-6">
+        <svg class="mx-auto mb-3 w-8 h-8 text-[#d4a853]" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+        </svg>
+        <h1 class="font-playfair text-3xl font-bold leading-tight text-gray-800">¡Mi Graduación!</h1>
+      </div>
+
+      <!-- Mensaje Central -->
+      <div class="text-center mb-6">
+        <p class="text-gray-600 leading-relaxed font-medium">
+          PONE_AQUÍ_EL_TEXTO_CENTRAL_DE_TU_INVITACION
+        </p>
+      </div>
+
+      <!-- Frase Emocional o Agradecimiento -->
+      <div class="text-center mb-6">
+        <div class="gold-divider mb-4"></div>
+        <p class="italic leading-relaxed text-gray-500">
+          "PONE_AQUÍ_UNA_FRASE_O_AGRADECIMIENTO_EMOCIONAL"
+        </p>
+        <div class="gold-divider mt-4"></div>
+      </div>
+
+      <!-- Recuadro Elegante con Datos Clave -->
+      <div class="border border-amber-100 bg-amber-50/20 rounded-2xl p-8 mb-6 text-center space-y-4 shadow-sm">
+        <p class="font-playfair text-2xl font-bold text-gray-800">PONE_AQUÍ_TU_NOMBRE</p>
+        <p class="uppercase tracking-widest text-xs text-amber-700 font-bold">PONE_AQUÍ_EL_TITULO_A_RECIBIR</p>
+        <div class="gold-divider my-4"></div>
+        <p class="text-gray-700 font-medium">📅 PONE_AQUÍ_LA_FECHA</p>
+        <p class="text-gray-700 font-medium">⏰ PONE_AQUÍ_LA_HORA</p>
+        <p class="font-bold text-gray-900 text-lg">📍 Girón Centro Cultural</p>
+        <p class="text-sm text-gray-500 font-medium">PONE_AQUÍ_LA_DIRECCION_DEL_EVENTO</p>
+      </div>
+
+      <!-- Botones Interactivos (Mapas y WhatsApp) -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+        <!-- El link ya apunta directamente al Centro Cultural en los mapas reales -->
+        <a href="https://www.google.com/maps/place/Gir%C3%B3n+Centro+Cultural/@5.7177188,-72.943341,17z/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border-2 border-[#d4a853] text-[#b8860b] hover:bg-[#d4a853] hover:text-white transition-all duration-300 font-semibold text-sm shadow-sm">
+          <i data-lucide="map-pin" style="width:18px;height:18px;"></i> Ver Ubicación
+        </a> 
+        <!-- Cambia la URL de wa.link si tienes una personalizada -->
+        <a href="https://wa.link/wrwil7" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#25d366] text-white hover:bg-[#1fb855] transition-all duration-300 font-semibold text-sm shadow-sm">
+          <i data-lucide="message-circle" style="width:18px;height:18px;"></i> Confirmar Asistencia
+        </a>
+      </div>
+
+      <!-- Cierre Decorativo -->
+      <div class="text-center">
+        <p class="font-playfair italic text-gray-600 text-lg font-medium">¡Te espero!</p>
+        <svg class="mx-auto mt-4 w-16 h-10 text-[#d4a853]" viewbox="0 0 64 40" fill="currentColor">
+          <path d="M32 38c-2-4-8-12-16-16 2 0 6 2 10 6-4-6-10-12-14-14 2-1 7 5 10 10-2-5-4-10-6-12 2 1 5 5 7 10 0-4-1-8-2-10 1 1 3 5 4 10 0-3 0-7-1-9 1 2 2 6 2 10z" />
+          <path d="M32 38c2-4 8-12 16-16-2 0-6 2-10 6 4-6 10-12 14-14-2-1-7 5-10 10 2-5 4-10 6-12-2 1-5 5-7 10 0-4 1-8 2-10-1 1-3 5-4 10 0-3 0-7 1-9-1 2-2 6-2 10z" />
+        </svg>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lógica de Animación y Efectos Interactivos -->
+  <script>
+    lucide.createIcons();
+
+    // Lluvia sutil de destellos dorados
+    const sparklesEl = document.getElementById('sparkles');
+    for (let i = 0; i < 15; i++) {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+        s.style.animationDelay = Math.random() * 4 + 's';
+        s.style.width = (2 + Math.random() * 3) + 'px';
+        s.style.height = s.style.width;
+        sparklesEl.appendChild(s);
+    }
+
+    // Mecanismo de apertura del sobre interactivo
+    function openEnvelope() {
+        const envelope = document.getElementById('envelope');
+        envelope.classList.add('opened');
+        setTimeout(() => {
+            document.getElementById('envelope-screen').classList.add('hidden');
+            const invSection = document.getElementById('invitation-section');
+            invSection.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                document.getElementById('invitation-content').classList.add('visible');
+            });
+        }, 900);
+    }
+  </script>
+</body>
+</html>
